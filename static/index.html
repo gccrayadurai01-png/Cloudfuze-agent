@@ -522,37 +522,12 @@ tbody tr.clickable { cursor: pointer; }
     <!-- ── SMTP/Email banner removed per product decision; users open Email Agent panel directly. ── -->
     <div id="topStatusBanner" style="display:none !important;"></div>
 
-    <!-- ── Tenant calling balance pill (ElevenLabs-style; tenant-only) ── -->
-    <div id="tenantBalancePill" class="tenant-only"
-         style="display:none;position:sticky;top:0;z-index:80;background:var(--bg);
-                border-bottom:1px solid var(--border);padding:10px 20px;">
-      <div style="display:flex;justify-content:flex-end;align-items:center;gap:14px;">
-        <div id="tbPillCard" onclick="toggleBalanceDetails()" style="display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,#0F172A 0%,#1E293B 50%,#312E81 100%);
-                    border:1px solid rgba(99,102,241,0.4);border-radius:14px;padding:10px 16px;color:#fff;cursor:pointer;
-                    box-shadow:0 4px 16px rgba(99,102,241,0.2);transition:all 0.2s;"
-             onmouseover="this.style.borderColor='rgba(99,102,241,0.7)';this.style.transform='translateY(-1px)';"
-             onmouseout="this.style.borderColor='rgba(99,102,241,0.4)';this.style.transform='none';">
-          <div style="width:10px;height:10px;border-radius:50%;background:#10B981;box-shadow:0 0 10px #10B981;flex-shrink:0;"></div>
-          <div style="line-height:1.1;">
-            <div style="font-size:10px;color:#A5B4FC;text-transform:uppercase;letter-spacing:1px;font-weight:600;">Minutes Remaining</div>
-            <div style="font-size:24px;font-weight:800;color:#fff;letter-spacing:-0.5px;">
-              <span id="tbMinutes">—</span>
-              <span style="color:#94A3B8;font-weight:500;font-size:13px;margin-left:2px;">min</span>
-            </div>
-            <div id="tbDetails" style="display:none;margin-top:4px;font-size:11px;color:#94A3B8;">
-              Balance: <b style="color:#fff;"><span id="tbDollars">$0.00</span></b>
-              · Rate: <b style="color:#A5B4FC;"><span id="tbRate">—</span>/min</b>
-              · Top-ups: <b style="color:#fff;"><span id="tbTopupCount">0</span></b>
-            </div>
-          </div>
-        </div>
-        <div style="display:flex;gap:6px;margin-top:6px;justify-content:flex-end;">
-          <button onclick="tenantTopUp()" title="Request top-up" style="background:#6366f1;color:#fff;border:0;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;box-shadow:0 2px 8px rgba(99,102,241,0.3);">+ Request Top-Up</button>
-          <button onclick="tenantViewTopupHistory()" title="Top-up history" style="background:transparent;color:#cbd5e1;border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:6px 10px;font-size:12px;cursor:pointer;">📜 History</button>
-          <button onclick="tenantViewStatement()" title="Monthly statement" style="background:transparent;color:#cbd5e1;border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:6px 10px;font-size:12px;cursor:pointer;">📄 Statement</button>
-        </div>
-      </div>
-    </div>
+    <!-- balance pill removed -->
+    <div id="tenantBalancePill" style="display:none!important;"></div>
+    <span id="tbMinutes" style="display:none"></span>
+    <span id="tbDollars" style="display:none"></span>
+    <span id="tbRate" style="display:none"></span>
+    <span id="tbTopupCount" style="display:none"></span>
 
     <div class="content">
 
@@ -4273,33 +4248,7 @@ async function loadTenantBalance() {
     const tcEl = document.getElementById('tbTopupCount');
     if (tcEl) tcEl.textContent = (d.topup_count||0);
 
-    // ── Low-balance warning banner ──
-    const pill = document.getElementById('tenantBalancePill');
-    let warn = document.getElementById('lowBalanceWarn');
-    const dollars = Number(d.dollar_balance || 0);
-    let level = null;
-    if (dollars <= 0)            level = 'depleted';
-    else if (minutes < 10)       level = 'critical';
-    else if (minutes < 30)       level = 'low';
-    if (level) {
-      if (!warn) {
-        warn = document.createElement('div');
-        warn.id = 'lowBalanceWarn';
-        warn.style.cssText = 'padding:10px 16px;margin:8px 20px;border-radius:8px;font-size:13px;font-weight:600;display:flex;align-items:center;gap:10px;';
-        if (pill && pill.parentNode) pill.parentNode.insertBefore(warn, pill.nextSibling);
-      }
-      const cfg = {
-        depleted: {bg:'#7f1d1d', color:'#fee2e2', icon:'🚫', msg:'Calling balance depleted. Outbound calls are blocked. Contact your admin to top up.'},
-        critical: {bg:'#9a3412', color:'#fed7aa', icon:'⚠️', msg:'Critical: under 10 minutes remaining. Top up soon to avoid interruption.'},
-        low:      {bg:'#854d0e', color:'#fef3c7', icon:'⏰', msg:'Heads up: balance is running low ('+minutes.toFixed(0)+' min remaining).'},
-      }[level];
-      warn.style.background = cfg.bg;
-      warn.style.color = cfg.color;
-      warn.innerHTML = '<span style="font-size:18px;">'+cfg.icon+'</span><span>'+cfg.msg+'</span>';
-      warn.style.display = 'flex';
-    } else if (warn) {
-      warn.style.display = 'none';
-    }
+    // balance warning banner removed
   } catch (e) { /* ignore */ }
 }
 
