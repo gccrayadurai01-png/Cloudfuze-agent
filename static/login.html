@@ -3,13 +3,14 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Knight AI SDR — Login</title>
+  <title>CloudFuze SDR — Sign In</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
       font-family: 'Inter', sans-serif;
-      background: #0F172A;
+      background: #0A0F1E;
       min-height: 100vh;
       display: flex;
       align-items: center;
@@ -24,222 +25,274 @@
       position: absolute;
       inset: 0;
       background-image:
-        linear-gradient(rgba(59,130,246,0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(59,130,246,0.05) 1px, transparent 1px);
-      background-size: 40px 40px;
+        linear-gradient(rgba(0, 122, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 122, 255, 0.04) 1px, transparent 1px);
+      background-size: 44px 44px;
     }
 
-    /* Glow orbs */
-    body::after {
-      content: '';
+    /* Blue glow top-left */
+    .glow-1 {
       position: absolute;
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 70%);
-      top: -100px;
-      left: -100px;
-      border-radius: 50%;
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(0,122,255,0.13) 0%, transparent 68%);
+      top: -200px;
+      left: -200px;
+      pointer-events: none;
+    }
+
+    /* Subtle glow bottom-right */
+    .glow-2 {
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(0,180,255,0.08) 0%, transparent 68%);
+      bottom: -150px;
+      right: -100px;
+      pointer-events: none;
     }
 
     .login-card {
       position: relative;
       z-index: 10;
-      background: rgba(255,255,255,0.04);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 20px;
-      padding: 48px 40px;
+      background: rgba(255,255,255,0.035);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 24px;
+      padding: 52px 44px 44px;
       width: 100%;
-      max-width: 420px;
-      box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+      max-width: 430px;
+      box-shadow: 0 32px 64px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.04);
     }
 
+    /* ── Logo ── */
     .logo {
       display: flex;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 32px;
+      gap: 14px;
+      margin-bottom: 36px;
       justify-content: center;
     }
 
     .logo-icon {
-      width: 48px;
-      height: 48px;
-      background: linear-gradient(135deg, #3B82F6, #1D4ED8);
-      border-radius: 12px;
+      width: 52px;
+      height: 52px;
+      background: linear-gradient(135deg, #007AFF 0%, #0055CC 100%);
+      border-radius: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 24px;
-      box-shadow: 0 0 20px rgba(59,130,246,0.4);
+      box-shadow: 0 0 28px rgba(0,122,255,0.45), 0 4px 16px rgba(0,0,0,0.4);
+      flex-shrink: 0;
+    }
+
+    .logo-icon svg {
+      width: 28px;
+      height: 28px;
     }
 
     .logo-text h1 {
-      font-size: 24px;
+      font-size: 22px;
       font-weight: 700;
       color: #FFFFFF;
+      letter-spacing: -0.3px;
     }
 
     .logo-text p {
-      font-size: 12px;
-      color: #64748B;
+      font-size: 11px;
+      color: #4A7FC1;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 1.2px;
+      margin-top: 2px;
+      font-weight: 500;
     }
 
-    h2 {
-      font-size: 20px;
+    /* ── Headings ── */
+    .card-title {
+      font-size: 19px;
       font-weight: 600;
-      color: #F1F5F9;
-      margin-bottom: 6px;
+      color: #F0F6FF;
+      margin-bottom: 4px;
       text-align: center;
     }
 
-    .subtitle {
+    .card-sub {
       font-size: 13px;
-      color: #64748B;
+      color: #4A6080;
       text-align: center;
       margin-bottom: 32px;
     }
 
-    .form-group {
-      margin-bottom: 16px;
-    }
+    /* ── Form ── */
+    .form-group { margin-bottom: 18px; }
 
     label {
       display: block;
-      font-size: 13px;
-      font-weight: 500;
-      color: #94A3B8;
-      margin-bottom: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #6B8AAE;
+      margin-bottom: 7px;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
     }
 
     input {
       width: 100%;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.12);
-      color: #F1F5F9;
-      border-radius: 10px;
-      padding: 12px 16px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #EEF4FF;
+      border-radius: 11px;
+      padding: 13px 16px;
       font-size: 14px;
       font-family: inherit;
-      transition: border-color 0.2s, box-shadow 0.2s;
+      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
       outline: none;
     }
 
-    input::placeholder { color: #475569; }
+    input::placeholder { color: #3A5070; }
 
     input:focus {
-      border-color: #3B82F6;
-      box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
+      border-color: #007AFF;
+      background: rgba(0,122,255,0.06);
+      box-shadow: 0 0 0 3px rgba(0,122,255,0.18);
     }
 
+    .pw-wrap { position: relative; }
+
+    .pw-wrap input { padding-right: 46px; }
+
+    .pw-toggle {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      border: 0;
+      cursor: pointer;
+      padding: 6px;
+      color: #4A6080;
+      font-size: 15px;
+      line-height: 1;
+      transition: color 0.15s;
+    }
+
+    .pw-toggle:hover { color: #007AFF; }
+
+    /* ── Button ── */
     .btn-login {
       width: 100%;
-      padding: 13px;
-      background: linear-gradient(135deg, #3B82F6, #1D4ED8);
+      padding: 14px;
+      background: linear-gradient(135deg, #007AFF 0%, #0055CC 100%);
       color: #fff;
       border: none;
-      border-radius: 10px;
+      border-radius: 11px;
       font-size: 15px;
       font-weight: 600;
       font-family: inherit;
       cursor: pointer;
-      margin-top: 8px;
-      transition: all 0.2s;
-      box-shadow: 0 4px 15px rgba(59,130,246,0.3);
+      margin-top: 6px;
+      transition: transform 0.18s, box-shadow 0.18s, opacity 0.18s;
+      box-shadow: 0 4px 20px rgba(0,122,255,0.35);
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 9px;
+      letter-spacing: 0.1px;
     }
 
-    .btn-login:hover {
+    .btn-login:hover:not(:disabled) {
       transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(59,130,246,0.4);
+      box-shadow: 0 8px 28px rgba(0,122,255,0.45);
     }
 
-    .btn-login:active { transform: translateY(0); }
+    .btn-login:active:not(:disabled) { transform: translateY(0); }
 
-    .btn-login:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
-    }
+    .btn-login:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
 
+    /* ── Error ── */
     .error-msg {
-      background: rgba(239,68,68,0.1);
-      border: 1px solid rgba(239,68,68,0.3);
-      color: #FCA5A5;
-      padding: 10px 14px;
-      border-radius: 8px;
+      background: rgba(255, 59, 48, 0.1);
+      border: 1px solid rgba(255, 59, 48, 0.28);
+      color: #FF9D97;
+      padding: 11px 14px;
+      border-radius: 9px;
       font-size: 13px;
-      margin-top: 12px;
+      margin-top: 14px;
       display: none;
       text-align: center;
     }
 
+    /* ── Divider ── */
     .divider {
       height: 1px;
-      background: rgba(255,255,255,0.08);
-      margin: 28px 0;
+      background: rgba(255,255,255,0.07);
+      margin: 30px 0 20px;
     }
 
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      font-size: 11px;
+      color: #1E3050;
+      letter-spacing: 0.3px;
+    }
+
+    .footer span { color: #2A5090; }
+
+    /* ── Spinner ── */
     .spinner {
-      width: 18px;
-      height: 18px;
-      border: 2px solid rgba(255,255,255,0.3);
+      width: 17px;
+      height: 17px;
+      border: 2px solid rgba(255,255,255,0.28);
       border-top-color: #fff;
       border-radius: 50%;
-      animation: spin 0.8s linear infinite;
+      animation: spin 0.75s linear infinite;
       display: none;
+      flex-shrink: 0;
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
 
-    .powered {
-      text-align: center;
-      margin-top: 24px;
-      font-size: 11px;
-      color: #334155;
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
+<div class="glow-1"></div>
+<div class="glow-2"></div>
 
 <div class="login-card">
+
   <div class="logo">
-    <div class="logo-icon">&#9876;</div>
+    <div class="logo-icon">
+      <!-- CloudFuze cloud + arrow icon -->
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M22 13.5C22 10.46 19.54 8 16.5 8C15.57 8 14.7 8.25 13.94 8.68C13.17 6.55 11.13 5 8.75 5C5.85 5 3.5 7.35 3.5 10.25C3.5 10.43 3.51 10.61 3.53 10.79C2.02 11.56 1 13.14 1 15C1 17.76 3.24 20 6 20H21C23.21 20 25 18.21 25 16C25 14.93 24.56 13.96 23.84 13.26" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M14 15L17 12L14 9" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M17 12H10" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
     <div class="logo-text">
-      <h1>Knight AI SDR</h1>
-      <p>AI Sales Development</p>
+      <h1>CloudFuze</h1>
+      <p>AI SDR Platform</p>
     </div>
   </div>
 
-  <h2>Welcome back</h2>
-  <p class="subtitle">Sign in to your Knight AI SDR dashboard</p>
+  <div class="card-title">Welcome back</div>
+  <div class="card-sub">Sign in to your CloudFuze dashboard</div>
 
   <div class="form-group">
-    <label>Username</label>
-    <input type="text" id="username" placeholder="Enter your username" autocomplete="username" onkeydown="if(event.key==='Enter')doLogin()"/>
+    <label for="username">Username</label>
+    <input type="text" id="username" placeholder="Enter your username"
+           autocomplete="username" onkeydown="if(event.key==='Enter')doLogin()"/>
   </div>
+
   <div class="form-group">
-    <label>Password</label>
-    <div style="position:relative;">
-      <input type="password" id="password" placeholder="Enter your password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()" style="padding-right:42px;"/>
-      <button type="button" onclick="togglePw('password',this)" aria-label="Show password"
-              style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:transparent;border:0;cursor:pointer;padding:6px;color:#94A3B8;font-size:16px;">👁</button>
+    <label for="password">Password</label>
+    <div class="pw-wrap">
+      <input type="password" id="password" placeholder="Enter your password"
+             autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"/>
+      <button type="button" class="pw-toggle" onclick="togglePw()" aria-label="Show password">&#128065;</button>
     </div>
   </div>
-  <script>
-    function togglePw(id, btn){
-      var el = document.getElementById(id);
-      if (!el) return;
-      var show = el.type === 'password';
-      el.type = show ? 'text' : 'password';
-      btn.textContent = show ? '🙈' : '👁';
-      btn.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
-    }
-  </script>
 
   <button class="btn-login" onclick="doLogin()" id="loginBtn">
     <div class="spinner" id="spinner"></div>
@@ -249,44 +302,51 @@
   <div class="error-msg" id="errorMsg">Invalid username or password</div>
 
   <div class="divider"></div>
-
-  <div class="powered">Powered by Knight AI</div>
+  <div class="footer">© 2026 <span>CloudFuze Inc.</span> · AI-Powered Sales Development</div>
 </div>
 
 <script>
-  // If already logged in, go to dashboard
   if (sessionStorage.getItem('cloudfuze_user')) {
     window.location.href = '/app';
   }
 
+  function togglePw() {
+    var el = document.getElementById('password');
+    var btn = document.querySelector('.pw-toggle');
+    var show = el.type === 'password';
+    el.type = show ? 'text' : 'password';
+    btn.innerHTML = show ? '&#128584;' : '&#128065;';
+    btn.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+  }
+
   async function doLogin() {
-    const username = document.getElementById('username').value.trim();
-    const password = document.getElementById('password').value;
-    const btn = document.getElementById('loginBtn');
-    const spinner = document.getElementById('spinner');
-    const btnText = document.getElementById('loginBtnText');
-    const errorMsg = document.getElementById('errorMsg');
+    var username = document.getElementById('username').value.trim();
+    var password = document.getElementById('password').value;
+    var btn = document.getElementById('loginBtn');
+    var spinner = document.getElementById('spinner');
+    var btnText = document.getElementById('loginBtnText');
+    var errorMsg = document.getElementById('errorMsg');
 
     if (!username || !password) {
-      errorMsg.textContent = 'Please enter username and password';
+      errorMsg.textContent = 'Please enter your username and password';
       errorMsg.style.display = 'block';
       return;
     }
 
     btn.disabled = true;
     spinner.style.display = 'block';
-    btnText.textContent = 'Signing in...';
+    btnText.textContent = 'Signing in…';
     errorMsg.style.display = 'none';
 
     try {
-      const resp = await fetch('/api/auth/login', {
+      var resp = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username: username, password: password }),
       });
 
       if (resp.ok) {
-        const data = await resp.json();
+        var data = await resp.json();
         sessionStorage.setItem('cloudfuze_user', data.username);
         sessionStorage.setItem('cloudfuze_token', data.token);
         sessionStorage.setItem('knight_role', data.role || 'tenant_user');
