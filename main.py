@@ -6308,29 +6308,14 @@ async def place_outbound_call(req: CallRequest) -> dict:
     if voice_id:
         logger.info("Voice override requested for call: %s (call-local only)", voice_id)
 
-    # ── Phase 3: per-tenant outbound number routing + zero-balance gate ──
-    # If the tenant has its own assigned phone_number / telnyx_connection_id, use them.
-    # Otherwise fall back to the global config defaults.
+    # ── Phase 3: per-tenant outbound number routing ──
     tenant_from_number: str | None = None
     tenant_connection_id: str | None = None
-    skip_balance_check = bool(getattr(req, "owner_test", False))
     try:
         tid_for_dial = current_tenant()
         if tid_for_dial:
             for t in _load_tenants():
                 if t.get("id") == tid_for_dial:
-                    # Zero-balance gate (skip for owner test calls).
-                    if not skip_balance_check:
-                        bal = float(t.get("dollar_balance", 0) or 0)
-                        if bal <= 0:
-                            view = _tenant_balance_view(t)
-                            raise HTTPException(
-                                status_code=402,
-                                detail=(f"Calling balance depleted ($"
-                                        f"{view['dollar_balance']:.2f}). "
-                                        f"Top up to resume calls. "
-                                        f"Rate: ${view['customer_per_min']:.4f}/min."),
-                            )
                     pn = (t.get("phone_number") or "").strip()
                     cid = (t.get("telnyx_connection_id") or "").strip()
                     if pn: tenant_from_number = pn

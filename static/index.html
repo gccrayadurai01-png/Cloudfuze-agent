@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Knight AI SDR — Sales Development</title>
+  <title>CloudFuze — AI SDR Platform</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
@@ -12,15 +12,15 @@
   <style>
 /* ===== CSS RESET & VARIABLES ===== */
 :root {
-  --sidebar-bg: #0F172A;
-  --sidebar-active: #1E40AF;
+  --sidebar-bg: #0A0F1E;
+  --sidebar-active: #0055CC;
   --sidebar-text: #94A3B8;
   --sidebar-text-active: #FFFFFF;
   --bg: #F8FAFC;
   --bg-card: #FFFFFF;
-  --primary: #3B82F6;
-  --primary-dark: #1D4ED8;
-  --primary-light: #DBEAFE;
+  --primary: #007AFF;
+  --primary-dark: #0055CC;
+  --primary-light: #DBEEFE;
   --success: #10B981;
   --success-light: #D1FAE5;
   --warning: #F59E0B;
@@ -423,30 +423,20 @@ tbody tr.clickable { cursor: pointer; }
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-brand">
       <h1>
-        <span class="brand-icon" style="background:linear-gradient(135deg,#6366f1 0%,#a855f7 100%);box-shadow:0 4px 14px rgba(99,102,241,0.4);">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-            <path d="M9 12l2 2 4-4"></path>
+        <span class="brand-icon" style="background:linear-gradient(135deg,#007AFF 0%,#0055CC 100%);box-shadow:0 4px 14px rgba(0,122,255,0.45);">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 17.5c1.4-.8 2-2 2-3.5 0-2.2-1.8-4-4-4-.2 0-.4 0-.6.1C16.8 8.4 15 7 13 7c-2.8 0-5 2.2-5 5 0 .2 0 .3 0 .5C6.3 13 5 14.6 5 16.5 5 18.4 6.6 20 8.5 20H19c.4 0 .7-.2 1-.5"></path>
+            <path d="M13 13l3-3-3-3"></path>
+            <path d="M16 13H9"></path>
           </svg>
         </span>
-        Knight AI
+        CloudFuze
       </h1>
-      <p id="brandTenantName" style="color:#A5B4FC;font-weight:600;text-transform:none;letter-spacing:0;font-size:12px;display:none;">—</p>
-      <p style="margin-top:0;">AI Sales Development</p>
+      <p id="brandTenantName" style="display:none;">—</p>
+      <p style="margin-top:0;">AI SDR Platform</p>
     </div>
     <nav class="sidebar-nav">
-      <!-- OWNER-ONLY NAV (hidden for tenants) -->
-      <div class="nav-item owner-only" data-page="owner-dashboard" onclick="navigate('owner-dashboard')" style="display:none;">
-        <i data-lucide="shield-check"></i> <span>Owner Dashboard</span>
-      </div>
-      <div class="nav-item owner-only" data-page="admin-tenants" onclick="navigate('admin-tenants')" style="display:none;">
-        <i data-lucide="building-2"></i> <span>Tenants</span>
-      </div>
-      <div class="nav-item owner-only" data-page="admin-users" onclick="navigate('admin-users')" style="display:none;">
-        <i data-lucide="users"></i> <span>Users</span>
-      </div>
-
-      <!-- TENANT NAV (hidden for owner) -->
+      <!-- NAV -->
       <div class="nav-item tenant-only active" data-page="dashboard" onclick="navigate('dashboard')">
         <i data-lucide="layout-dashboard"></i> <span>Dashboard</span>
       </div>
@@ -455,9 +445,6 @@ tbody tr.clickable { cursor: pointer; }
       </div>
       <div class="nav-item tenant-only" data-page="contacts" onclick="navigate('contacts')">
         <i data-lucide="users"></i> <span>Contacts</span>
-      </div>
-      <div class="nav-item tenant-only" data-page="bella" onclick="navigate('bella')">
-        <i data-lucide="search"></i> <span>Bella AI</span>
       </div>
       <div class="nav-item tenant-only" data-page="ai-agents" onclick="navigate('ai-agents')">
         <i data-lucide="bot"></i> <span>AI Agent</span>
@@ -581,6 +568,24 @@ tbody tr.clickable { cursor: pointer; }
           <div class="card">
             <div class="card-title">Call Outcomes</div>
             <canvas id="chartOutcomes" height="200"></canvas>
+          </div>
+        </div>
+
+        <!-- API Cost Tracker -->
+        <div class="card" style="margin-bottom:20px;border-left:4px solid #007AFF;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+            <div class="card-title" style="margin-bottom:0;">API Consumption</div>
+            <button class="btn btn-secondary btn-sm" onclick="loadApiCost()"><i data-lucide="refresh-cw"></i> Refresh</button>
+          </div>
+          <div id="apiCostGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;">
+            <div class="stat-card"><div class="stat-icon" style="background:#0055CC20;color:#007AFF;"><i data-lucide="phone-call"></i></div>
+              <div class="stat-info"><div class="stat-value" id="cost-telnyx">—</div><div class="stat-label">Telnyx (minutes)</div></div></div>
+            <div class="stat-card"><div class="stat-icon" style="background:#7C3AED20;color:#7C3AED;"><i data-lucide="mic"></i></div>
+              <div class="stat-info"><div class="stat-value" id="cost-elevenlabs">—</div><div class="stat-label">ElevenLabs (chars)</div></div></div>
+            <div class="stat-card"><div class="stat-icon" style="background:#D9770620;color:#D97706;"><i data-lucide="brain"></i></div>
+              <div class="stat-info"><div class="stat-value" id="cost-anthropic">—</div><div class="stat-label">Claude (tokens)</div></div></div>
+            <div class="stat-card" style="border:1px solid #007AFF40;"><div class="stat-icon" style="background:#007AFF20;color:#007AFF;"><i data-lucide="dollar-sign"></i></div>
+              <div class="stat-info"><div class="stat-value" id="cost-total">—</div><div class="stat-label">Est. Total Cost</div></div></div>
           </div>
         </div>
 
@@ -862,8 +867,7 @@ tbody tr.clickable { cursor: pointer; }
         </div>
       </div>
 
-      <!-- ===================== BELLA AI (Standalone Search) ===================== -->
-      <div class="page" id="page-bella">
+      <div class="page" id="page-bella" style="display:none!important;">
         <div class="page-header">
           <div>
             <h2>Bella AI</h2>
@@ -1002,7 +1006,7 @@ tbody tr.clickable { cursor: pointer; }
           </div>
           <div class="form-group">
             <label>Signature</label>
-            <textarea id="eaSignature" rows="3" placeholder="Best,&#10;{sender_name}&#10;Knight AI SDR"></textarea>
+            <textarea id="eaSignature" rows="3" placeholder="Best,&#10;{sender_name}&#10;CloudFuze"></textarea>
           </div>
           <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:center;padding-top:6px;">
             <label class="checkbox-label" style="font-size:13px;">
@@ -1063,7 +1067,7 @@ tbody tr.clickable { cursor: pointer; }
       </div>
 
       <!-- ===================== OWNER DASHBOARD (Owner only) ===================== -->
-      <div class="page" id="page-owner-dashboard">
+      <div class="page" id="page-owner-dashboard" style="display:none!important;">
         <div class="page-header">
           <div>
             <h2>🛡️ Owner Console</h2>
@@ -1141,8 +1145,8 @@ tbody tr.clickable { cursor: pointer; }
         </div>
       </div>
 
-      <!-- ===================== ADMIN · TENANTS (Owner only) ===================== -->
-      <div class="page" id="page-admin-tenants">
+      <!-- owner pages removed -->
+      <div class="page" id="page-admin-tenants" style="display:none!important;">
         <div class="page-header">
           <div>
             <h2>🏢 Tenants</h2>
@@ -1300,8 +1304,7 @@ tbody tr.clickable { cursor: pointer; }
         </div>
       </div>
 
-      <!-- ===================== ADMIN · USERS (Owner only) ===================== -->
-      <div class="page" id="page-admin-users">
+      <div class="page" id="page-admin-users" style="display:none!important;">
         <div class="page-header">
           <div>
             <h2>👥 Users</h2>
@@ -2341,9 +2344,38 @@ async function loadDashboard() {
     } catch(e) {}
 
     lucide.createIcons();
+    loadApiCost();
   } catch (e) {
     console.error('Dashboard load error:', e);
   }
+}
+
+async function loadApiCost() {
+  try {
+    const history = await GET('/api/calls/history');
+    const calls = (history && history.calls) || [];
+
+    // Telnyx: total minutes from call durations
+    const totalSec = calls.reduce((s, c) => s + (c.duration_seconds || 0), 0);
+    const totalMin = totalSec / 60;
+    const telnyxCost = totalMin * 0.007; // ~$0.007/min inbound+outbound blended
+
+    // ElevenLabs: estimate chars from calls that used TTS (avg 120 chars/reply, ~4 replies/min)
+    const elChars = Math.round(totalMin * 4 * 120);
+    const elCost = (elChars / 1000) * 0.00018; // $0.18/1k chars
+
+    // Anthropic: estimate from call turns (avg 200 tokens/turn, ~4 turns/min)
+    const claudeTokens = Math.round(totalMin * 4 * 200);
+    const claudeCost = (claudeTokens / 1_000_000) * 3.0; // $3/MTok (Sonnet)
+
+    const totalCost = telnyxCost + elCost + claudeCost;
+
+    const fmt = (n, d=2) => n < 0.01 && n > 0 ? '<$0.01' : '$' + n.toFixed(d);
+    document.getElementById('cost-telnyx').textContent     = Math.round(totalMin) + ' min';
+    document.getElementById('cost-elevenlabs').textContent = elChars.toLocaleString() + ' ch';
+    document.getElementById('cost-anthropic').textContent  = (claudeTokens / 1000).toFixed(1) + 'k tok';
+    document.getElementById('cost-total').textContent      = fmt(totalCost);
+  } catch(e) { /* silent */ }
 }
 
 async function runHealthCheck() {
@@ -4020,33 +4052,9 @@ function applyRoleVisibility() {
     el.style.display = isOwner ? 'none' : '';
   });
 
-  // Highlight tenant company name in sidebar header
+  // Sidebar always shows CloudFuze
   const brandName = document.getElementById('brandTenantName');
-  if (brandName) {
-    if (!isOwner) {
-      // Lookup tenant name (cached)
-      const cached = sessionStorage.getItem('knight_tenant_name');
-      if (cached) {
-        brandName.textContent = '🏢 ' + cached;
-        brandName.style.display = 'block';
-      } else {
-        const tid = sessionStorage.getItem('knight_tenant') || '';
-        if (tid) {
-          GET('/api/tenant/balance').then(()=>{}); // warm
-          fetch('/api/me', { headers: { 'Authorization': 'Bearer '+(sessionStorage.getItem('cloudfuze_token')||'') } })
-            .then(r => r.json()).then(me => {
-              const name = (me && (me.tenant_name || me.tenant_id || tid)) || tid;
-              sessionStorage.setItem('knight_tenant_name', name);
-              brandName.textContent = '🏢 ' + name;
-              brandName.style.display = 'block';
-            }).catch(()=>{});
-        }
-      }
-    } else {
-      brandName.textContent = '👁 Owner Console';
-      brandName.style.display = 'block';
-    }
-  }
+  if (brandName) { brandName.style.display = 'none'; }
   // topStatusBanner is owner-only (handled by .owner-only class above) —
   // tenants no longer see the SMTP status nag at the top.
 
