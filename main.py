@@ -1026,10 +1026,6 @@ def _stop_filler_if_playing(cc_id: str) -> None:
 async def serve_landing():
     from fastapi.responses import RedirectResponse
     return RedirectResponse(url="/login", status_code=302)
-    index = STATIC_DIR / "index.html"
-    if index.exists():
-        return FileResponse(str(index))
-    return JSONResponse({"status": "Knight AI SDR running"})
 
 
 @app.get("/app")
